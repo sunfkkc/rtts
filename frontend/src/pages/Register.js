@@ -19,8 +19,8 @@ function Register() {
     }
 
     const onClick = function(e){
-        //e.preventDefault()
         if (user.pwd !== user.password2){
+            e.preventDefault()
             setTitle('비밀번호가 일치하지 않습니다')
             setUser({name:'',email:'',pwd:'',password2:'',})
         }/*
