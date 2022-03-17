@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
+//import { store } from './app/store';
+import { Provider } from 'react-redux'; //리덕스 사용하려면 <App />을 Provider로 감싸야 함
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
       <App />
-    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
