@@ -22,6 +22,11 @@ function Register() {
     const onSubmit = function(e){
         e.preventDefault();
         
+        if(!name || !email || !pw || !password2 || !gender){
+            return alert("Please add all fields")
+        }
+
+
         if (pw !== password2){
             alert('비밀번호가 일치하지 않습니다')
             //setUser({name:'',email:'',pw:'',password2:'',})
@@ -44,7 +49,7 @@ function Register() {
                     alert(`오류 발생 Status : ${response.status}`)
                 }
             })
-            .catch((error) => {alert(error);})
+            .catch((error) => {alert(error.message);})
             
         }
     }
