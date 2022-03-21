@@ -1,4 +1,10 @@
+/*@font-face{
+    font-family: 'bm';
+    src: url('./fonts/BMHANNA_11yrs_ttf.ttf') format('truetype');
+}*/
+
 *{
     margin: 0;
+    font-family: bm;
 }
 

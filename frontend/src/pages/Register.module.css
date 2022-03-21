@@ -33,3 +33,6 @@
 .btn{
     font-size: 1.3rem;
 }
+.btn :hover{
+    cursor: pointer;
+}
