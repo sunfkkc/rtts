@@ -1,0 +1,43 @@
+.navbar{
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 10%), 0 2px 2px rgb(0 0 0 / 6%),
+    0 0 2px rgb(0 0 0 / 7%);
+    padding: 20px;
+    position: fixed;
+    background-color: white;
+}
+.container{
+    display: flex;
+    justify-content: space-between;
+}
+.hamburger:hover{
+    cursor: pointer;
+}
+.mobilemenu{
+    position: fixed;
+    margin-top: 68px;
+    width: 60%;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.15) 2px 2px ;
+    background-color: white;
+    text-align: center;
+}
+li{
+    margin-top: 40px;
+    list-style: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+ul{
+    padding: 0;
+}
+.mobilemenu a{
+    text-decoration: none;
+    color: black;
+}
+.mobilemenu a:hover{
+    background-color: aquamarine;
+    border-radius: 10px;
+}

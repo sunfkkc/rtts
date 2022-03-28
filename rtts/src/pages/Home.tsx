@@ -1,8 +1,12 @@
 import React from 'react'
-
+import Header from '../components/Header'
+import img from '../static/bgimg.png'
 function Home() {
   return (
-    <div>Home</div>
+    <>
+    <Header/>
+    <img src={img}/>
+    </>
   )
 }
 
