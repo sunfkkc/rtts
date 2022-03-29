@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import './App.css'
 import Header from './components/Header';
-
+import {RecoilRoot} from 'recoil'
 
 import Home from './pages/Home';
 import Login from './pages/Login'
@@ -11,6 +11,7 @@ import Run from './pages/Run';
 function App() {
   return (
     <>
+    <RecoilRoot>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Login/>}/>
@@ -19,7 +20,7 @@ function App() {
         <Route path='/run' element={<Run/>}/>
       </Routes>
     </BrowserRouter>
-    
+    </RecoilRoot>
     </>
   );
 }
