@@ -1,12 +1,26 @@
-.h1{
+.h1 {
     text-align: center;
 }
-.container{
+
+.container {
     width: 100%;
     height: auto;
 }
-.map{
+
+.map {
     width: 250px;
     height: 450px;
     margin: auto;
+}
+
+.runState {
+    margin: 5px;
+    text-align: center;
+    border-collapse: separate;
+    border-spacing: 20px 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
 }

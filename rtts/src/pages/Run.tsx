@@ -9,13 +9,25 @@ function Run() {
 
   return (
     <>
-      <div className='body'>
-        <h2 className={styles.h1}>Run-Together</h2>
-        <div className={styles.container}>
-          <h3>주행거리</h3>{runData.dis}
-          <Map />
-        </div>
+      <div className={styles.center}>
+        <table className={styles.runState}>
+          <thead>
+            <tr>
+              <th>누적 거리</th>
+              <th>현재 속도</th>
+              <th>누적 시간</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{runData.dis}km</td>
+              <td>{runData.speed}m/s</td>
+              <td>{runData.time}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <Map />
     </>
   )
 }
