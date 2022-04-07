@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import Header from '../components/Header'
 import Map from './Map'
 import styles from './Run.module.css'
 import { runState } from './runState'
@@ -10,7 +9,6 @@ function Run() {
 
   return (
     <>
-      <Header />
       <div className='body'>
         <h2 className={styles.h1}>Run-Together</h2>
         <div className={styles.container}>

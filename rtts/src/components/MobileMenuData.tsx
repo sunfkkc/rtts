@@ -1,5 +1,6 @@
 
 import {BiRun} from 'react-icons/bi'
+import {FaHome} from 'react-icons/fa'
 
 interface dataForm{
     id:number,
@@ -9,8 +10,15 @@ interface dataForm{
 }
 export const MobileMenuData:dataForm[] = [
     {
+        id:0,
+        title:' Home',
+        icon:<FaHome />,
+        path:'/home'
+    },
+    
+    {
         id:1,
-        title:' 마이 러닝',
+        title:' My Running',
         icon:<BiRun />,
         path:'/run'
     }
