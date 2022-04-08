@@ -43,7 +43,7 @@ function Register() {
         else{
             const userData = {name:name,email:email,pwd:pw,gender:gender}
             
-            fetch('/api/member/join',{
+            fetch('/api/join',{
                 method:'POST',
                 headers:{
                     "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import React ,{useState, useEffect}from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import styles from './Login.module.css'
+
 interface longinData{
     email:string,
     pw:string,
@@ -23,21 +24,26 @@ function Login() {
         const userData = {email:email, pwd:pw}
 
         
-        fetch('/api/member/login',{
+        fetch('/api/login',{
             //폼 데이터 fetch 
             method:'POST',
                 headers:{
                     "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: JSON.stringify(userData),
         }).then((response) => {
             if(response.ok){
+                response.json()
                 navigate('/home')
             }
             else{
                 alert(`오류 발생 Status : ${response.status}`)
             }
         })
+        /*response.json())
+        .then(message=>{alert(message.message)})*/
+        
         
     }
     const onChange = function(e:React.ChangeEvent<HTMLInputElement>){
