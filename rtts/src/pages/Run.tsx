@@ -1,12 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { ReactEventHandler, useEffect, useState } from 'react'
 import Map from './Map'
 import styles from './Run.module.css'
 import { runState } from './runState'
 import { useRecoilState } from 'recoil'
+import {AiFillPlayCircle, AiFillPauseCircle, } from 'react-icons/ai'
+import {BsStopCircle} from 'react-icons/bs'
+
 
 function Run() {
+  let count = 1
   const [runData, setRunData] = useRecoilState(runState)
+  const [controler, setControler] = useState<boolean>(false)
+  const startTime = setInterval(
+    function(){
+      setRunData((prev) => ({
+        ...prev,
+        time:count++,
+      }))
+    },1000
+  )
+  const getStart = function(e:React.MouseEvent){
+    setControler(true)
+    count = 1
+    startTime
+  }
+  const getPause = function(){
 
+  }
+  const getStop = function() {
+    setControler(false)
+    clearInterval(startTime)
+  }
   return (
     <>
       <div className={styles.center}>
@@ -28,6 +52,15 @@ function Run() {
         </table>
       </div>
       <Map />
+      <div className={styles.controler}>
+        { !controler? (<AiFillPlayCircle size="2.5rem" onClick={getStart}/>) : (
+          <>
+          <AiFillPauseCircle size="2.5rem" onClick={getPause}/> 
+          <BsStopCircle size="2.5rem" onClick={getStop}/>
+          </>
+        )}
+          
+      </div>
     </>
   )
 }
