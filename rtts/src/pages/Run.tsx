@@ -1,35 +1,54 @@
-import React, { ReactEventHandler, useEffect, useState } from 'react'
+import React, { ReactEventHandler, useEffect, useState , useRef} from 'react'
 import Map from './Map'
 import styles from './Run.module.css'
 import { runState } from './runState'
 import { useRecoilState } from 'recoil'
 import {AiFillPlayCircle, AiFillPauseCircle, } from 'react-icons/ai'
 import {BsStopCircle} from 'react-icons/bs'
+import { Prev } from 'react-bootstrap/esm/PageItem'
 
 
 function Run() {
-  let count = 1
-  const [runData, setRunData] = useRecoilState(runState)
+  //const [runData, setRunData] = useRecoilState(runState)
   const [controler, setControler] = useState<boolean>(false)
-  const startTime = setInterval(
+  const [runData, setRunData] = useState({
+    dis:0,
+    speed:0,
+    time:0,
+  })
+  const timeRef = useRef(0)
+  useEffect(()=>{
+    setInterval(()=>{
+      setRunData(prev=>({
+        ...prev,
+        time:timeRef.current += 1
+      }))
+    },1000)
+  },[])
+  /* const startTime = setInterval(
     function(){
+      count += 1
       setRunData((prev) => ({
         ...prev,
-        time:count++,
+        time:count,
       }))
     },1000
-  )
+  )  */
   const getStart = function(e:React.MouseEvent){
-    setControler(true)
+    setControler(true)/* 
     count = 1
-    startTime
+    setRunData(prev=>({
+      ...prev,
+      time:count
+    }))
+    console.log(runData.time) */
   }
   const getPause = function(){
 
   }
   const getStop = function() {
     setControler(false)
-    clearInterval(startTime)
+    //clearInterval(startTime)
   }
   return (
     <>
