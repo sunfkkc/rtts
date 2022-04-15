@@ -16,40 +16,27 @@ function Run() {
     speed:0,
     time:0,
   })
-  const timeRef = useRef(0)
-  useEffect(()=>{
-    setInterval(()=>{
-      setRunData(prev=>({
-        ...prev,
-        time:timeRef.current += 1
-      }))
-    },1000)
-  },[])
-  /* const startTime = setInterval(
-    function(){
-      count += 1
-      setRunData((prev) => ({
-        ...prev,
-        time:count,
-      }))
-    },1000
-  )  */
+  const [position, getPosition] = useState({
+    lat:0,
+    lon:0,
+  })
   const getStart = function(e:React.MouseEvent){
-    setControler(true)/* 
-    count = 1
-    setRunData(prev=>({
-      ...prev,
-      time:count
-    }))
-    console.log(runData.time) */
+    setControler(true)
   }
   const getPause = function(){
 
   }
   const getStop = function() {
     setControler(false)
-    //clearInterval(startTime)
   }
+
+   const  getCenter=  navigator.geolocation.getCurrentPosition((obj)=>{
+      getPosition({
+        lat:obj.coords.latitude,
+        lon:obj.coords.longitude
+      })
+      }) 
+
   return (
     <>
       <div className={styles.center}>
@@ -70,8 +57,9 @@ function Run() {
           </tbody>
         </table>
       </div>
-      <Map />
+      <Map lat={position.lat} lon={position.lon}/>
       <div className={styles.controler}>
+        <button>현재 위치</button>
         { !controler? (<AiFillPlayCircle size="2.5rem" onClick={getStart}/>) : (
           <>
           <AiFillPauseCircle size="2.5rem" onClick={getPause}/> 
