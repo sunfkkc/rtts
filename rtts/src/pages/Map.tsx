@@ -10,7 +10,7 @@ function Map(props: any) {
     const lat = props.latitude;
     const lon = props.longitude;
     const isRecord = props.record;
-    const positionArray = props.positionArray.current || [];
+    const positionArray = props.positionArray || [];
 
     const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
     const options = {
@@ -21,19 +21,21 @@ function Map(props: any) {
     const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
     if (isRecord) {
-      let linePath = positionArray.map(
-        (item: any) => new kakao.maps.LatLng(item.latitude, item.longitude)
-      );
+      if (positionArray.length !== 0) {
+        let linePath = positionArray.map(
+          (item: any) => new kakao.maps.LatLng(item.latitude, item.longitude)
+        );
 
-      let polyline = new kakao.maps.Polyline({
-        path: linePath, // 선을 구성하는 좌표배열 입니다
-        strokeWeight: 5, // 선의 두께 입니다
-        strokeColor: "#FFAE00", // 선의 색깔입니다
-        strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        strokeStyle: "solid", // 선의 스타일입니다
-      });
+        let polyline = new kakao.maps.Polyline({
+          path: linePath, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 5, // 선의 두께 입니다
+          strokeColor: "#FFAE00", // 선의 색깔입니다
+          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: "solid", // 선의 스타일입니다
+        });
 
-      polyline.setMap(map);
+        polyline.setMap(map);
+      }
     }
     function displayMarker(locPosition: any, message: any) {
       // 마커를 생성합니다

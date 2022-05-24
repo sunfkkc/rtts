@@ -8,18 +8,15 @@ import { getDistance } from "../util/getDistance";
 import Running10m from "./Running10m";
 
 function Run() {
-  let posArray = new Array();
   const [controler, setControler] = useState(false);
   const [time, setTime] = useState(0);
   const [dist, setDist] = useState(0);
   const [speed, setSpeed] = useState(0);
-  const [position, setPosition] = useState([
-    {
-      latitude: 35.1768,
-      longitude: 126.9098,
-    },
-  ]);
-
+  const [position, setPosition] = useState({
+    latitude: 35.1768,
+    longitude: 126.9098,
+  });
+  const [posArray, setPosArray] = useState([]);
   const [running10mData, setRunning10mData] = useState([]);
   const timeRecord = useRef(null);
   const geoRecord = useRef(null);
@@ -28,7 +25,7 @@ function Run() {
     const {
       coords: { latitude, longitude },
     } = await getPosition();
-    setPosition((prev) => [...prev, { latitude, longitude }]);
+    setPosition({ latitude, longitude });
     console.log("current Position : ", latitude, longitude);
   };
   useEffect(() => {
@@ -36,128 +33,74 @@ function Run() {
   }, []);
   useEffect(() => {
     if (controler) {
+      if (dist !== 0) {
+        setSpeed(Math.round(((dist * 1000) / time) * 100) / 100);
+      }
+      if (time % 10 === 0) {
+        if (running10mData.length === 0) {
+          setRunning10mData([{ dist: dist, speed: speed }]);
+        } else {
+          setRunning10mData((prev) => [
+            ...prev,
+            {
+              dist: dist - prev[prev.length - 1].dist,
+              speed:
+                Math.round(((dist - prev[prev.length - 1].dist) / 60) * 100) /
+                100,
+            },
+          ]);
+        }
+        console.log("filtered");
+        console.log(running10mData.map((item) => item.speed));
+      }
+    }
+  }, [time]);
+
+  useEffect(() => {
+    if (controler) {
+      setPosArray((prev) => [...prev, position]);
+      console.log("posarray");
+      console.log(posArray);
+      const posLen = posArray.length;
+      if (posLen > 1) {
+        setDist(
+          (prev) =>
+            prev + getDistance(posArray[posLen - 1], posArray[posLen - 2])
+        );
+      }
+    }
+  }, [position]);
+  useEffect(() => {
+    if (controler) {
       let tr = setInterval(() => {
         setTime((time) => time + 1);
       }, 1000);
       return () => {
-        setPosition([
-          {
-            latitude: 35.1768,
-            longitude: 126.9098,
-          },
-        ]);
+        setPosition({
+          latitude: 35.1768,
+          longitude: 126.9098,
+        });
         setTime(0);
         setDist(0);
         setSpeed(0);
         clearInterval(tr);
+        setPosArray([]);
       };
     }
   }, [controler]);
 
-  const getStart = function (e) {
+  const getStart = (e) => {
     setControler(true);
+    setPosition({ latitude: 35.5, longitude: 127.1 });
+    console.log("before watchposition");
+    console.log(position);
     geoRecord.current = navigator.geolocation.watchPosition((success) => {
       console.log("watchposition");
       console.log(new Date());
       const { latitude, longitude } = success.coords;
-      setPosition((prev) => [...prev, { latitude, longitude }]);
+      setPosition({ latitude, longitude });
       console.log(position);
-      console.log(position.length);
     });
-    /* let time = 0;
-    timeRecord.current = setInterval(async () => {
-      time += 1;
-      setRunData({ ...runData, time });
-      getCurrentPosition();
-      setPosArray(posArray.concat(position));
-      console.log("posarray : " + posArray.length);
-      if (posArray.length > 1) {
-        setRunData({
-          ...runData,
-          dis:
-            runData.dis +
-            getDistance(
-              posArray[posArray.length - 1],
-              posArray[posArray.length - 2]
-            ),
-        });
-        setRunData({
-          ...runData,
-          speed: runData.dis / runData.time,
-        });
-
-        console.log("setrundata : " + runData);
-      }
-      if (time % 60 === 0) {
-        if (running10mData.length === 0) {
-          setRunning10mData(running10mData.concat(runData));
-        } else {
-          setRunning10mData(
-            running10mData.concat({
-              ...runData,
-              dis: runData.dis - running10mData[running10mData.length - 1].dis,
-              speed:
-                (runData.dis - running10mData[running10mData.length - 1].dis) /
-                60,
-            })
-          );
-        }
-      }
-    }, 1000); 
-    const options = {
-      enableHighAccuracy: true,
-    };
-    geoRecord.current = navigator.geolocation.watchPosition(
-      (success) => {
-        console.log("watchposition");
-        const { latitude, longitude } = success.coords;
-        setPosition({ latitude, longitude });  
-      setPosArray(posArray.concat(position));
-      console.log("posarray : " + posArray.length);
-      if (posArray.length > 1) {
-        setRunData({
-          ...runData,
-          dis:
-            runData.dis +
-            getDistance(
-              posArray[posArray.length - 1],
-              posArray[posArray.length - 2]
-            ),
-        });
-        setRunData({
-          ...runData,
-          speed: runData.dis / runData.time,
-        });
-
-        console.log("setrundata : " + runData);
-      }
-      if (time % 60 === 0) {
-        if (running10mData.length === 0) {
-          setRunning10mData(running10mData.concat(runData));
-        } else {
-          setRunning10mData(
-            running10mData.concat({
-              ...runData,
-              dis: runData.dis - running10mData[running10mData.length - 1].dis,
-              speed:
-                (runData.dis - running10mData[running10mData.length - 1].dis) /
-                60,
-            })
-          );
-        }
-      }
-      },
-      (err) => {
-        console.log(err);
-      },
-      options
-    );*/
-    /*     const {
-      coords: { latitude, longitude },
-    } = await getWatchPosition();
-
-    setPosition();
-    setPosition({ latitude, longitude }); */
   };
   const getPause = function () {};
   const getStop = function () {
@@ -165,15 +108,6 @@ function Run() {
     clearInterval(timeRecord.current);
     navigator.geolocation.clearWatch(geoRecord.current);
   };
-  /*   useEffect(() => {
-    let time = 0;
-    let timeRecord = setInterval(() => {
-      time += 1;
-      setRunData({ ...runData, time });
-    }, 1000);
-    return () => clearInterval(timeRecord);
-  }, [controler]); */
-  const speed10mArray = [200, 300, 400, 500];
   return (
     <>
       <div className={styles.center}>
@@ -195,13 +129,12 @@ function Run() {
         </table>
       </div>
       <Map
-        latitude={position[position.length - 1].latitude}
-        longitude={position[position.length - 1].longitude}
+        latitude={position.latitude}
+        longitude={position.longitude}
         record={controler}
-        positionArray={position}
+        positionArray={posArray}
       />
       <div className={styles.controler}>
-        {/* <button onClick={getCurrentPosition}>현재 위치</button> */}
         {!controler ? (
           <AiFillPlayCircle size="2.5rem" onClick={getStart} />
         ) : (
@@ -211,7 +144,7 @@ function Run() {
           </>
         )}
       </div>
-      <Running10m speed10mArray={speed10mArray} />
+      <Running10m speed10mArray={running10mData.map((item) => item.speed)} />
     </>
   );
 }

@@ -9,7 +9,7 @@ export const getDistance = (pos1, pos2) => {
 
   dist = Math.acos(dist);
   dist = (dist * 180) / Math.PI;
-  dist = dist * 60 * 1.1515 * 1609.344;
+  dist = dist * 60 * 1.1515 * 1.609344;
 
-  return dist;
+  return Math.round(dist * 100) / 100;
 };
